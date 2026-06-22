@@ -1,10 +1,19 @@
 service: api-web-scraping-igp
 
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true   # Usa Docker para instalar dependencias limpiamente
+    layer: true          # (opcional) crea una capa Lambda para reutilizar
+
 provider:
   name: aws
   runtime: python3.9
   region: us-east-1
   stage: ${opt:stage, 'dev'}
+  role: arn:aws:iam::413507650058:role/LabRole   # <--- Línea CLAVE para evitar errores de permisos
   environment:
     TABLE_NAME: ${self:service}-${self:provider.stage}-sismos
   iamRoleStatements:
